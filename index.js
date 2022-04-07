@@ -65,12 +65,6 @@ function parse_time(t_in_seconds) {
 
 setTimeout(function() {
 
-
-    function loopClicked() {
-        if (LOOPING === true) LOOPING = false;
-        else LOOPING = true;
-    }
-
     var play_button = document.getElementById("play_button");
 
     var Songs = fs.readdirSync("./songs/");
@@ -189,10 +183,17 @@ setTimeout(function() {
 
                 songBuffer.onended = function() {
                     if (LOOPING) {
-                        PlayMusicWrap();
-                    } else if (nfyPlaylist.nextExists() && !LOOPING) {
+                        songBuffer.play();
+                        // if (nfyPlaylist.getCurrentSong() !== null) {
+                        //     PlayMusicWrap();
+                        // }
+                    } else if (nfyPlaylist.nextExists()) {
                         console.log("hello")
+
                         nfyPlaylist.moveByOne();
+
+                        songBuffer = null
+
                         PlayMusicWrap()
                     }
                 }
@@ -206,11 +207,16 @@ setTimeout(function() {
                     play_button.innerText = "play";
                 } else {
                     console.log("Wrong play");
-                    songBuffer.pause();
+                    // songBuffer.pause();
                 }
 
             }
         })
+    })
+
+    client.on('loopClicked', () => {
+        if (LOOPING === true) LOOPING = false;
+        else LOOPING = true;
     })
 
 }, 0);
