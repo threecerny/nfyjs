@@ -1,5 +1,4 @@
 const fs = require("fs");
-// const discordRPC = require('discord-rpc');
 const path = require('path');
 const EventEmitter = require("events");
 
@@ -30,38 +29,30 @@ const client = new EventEmitter();
 
 var PLAYING = false;
 var IN_PLAYLIST = false; //;
+var LOOPING = false
 
 let songBuffer = null; // rip
 
 var i = 0;
 var max = 0;
 
-// const clientID = '961150717748445245';
-// const RPC = new discordRPC.Client({ transport: 'ipc' });
-
-// discordRPC.register(clientID); //oh sick rpc? yes
-
-// function rich_presence_song
-
-// function rich_presence_neuter
-
 function parse_time(t_in_seconds) {
     let time = t_in_seconds;
     let _t = "";
     var minutes = ~~((time % 3600) / 60);;
     var seconds = parseInt(time % 60);
-    if (seconds == NaN) { seconds = 0}
-    let secs = "" //test it
+    if (seconds == NaN) { seconds = 0 }
+    let secs = ""
 
     _t += parseInt(minutes.toString()) + ":";
 
     if (seconds < 10) {
         secs += "0";
     }
-    
+
     secs += seconds.toString();
 
-    if (secs == NaN)  {
+    if (secs == NaN) {
         secs = "00"
         console.log("Changed")
     }
@@ -72,19 +63,16 @@ function parse_time(t_in_seconds) {
     return _t;
 }
 
-setTimeout(function() { //see how that works?
-    // this is test try it in console
-    // try changing it using button
+setTimeout(function() {
 
-    var error_log = document.getElementById("ERROR_LOG");
+
+    function loopClicked() {
+        if (LOOPING === true) LOOPING = false;
+        else LOOPING = true;
+    }
+
     var play_button = document.getElementById("play_button");
 
-    function ERROR(txt) {
-        error_log.innerText = txt;
-        setTimeout(function() {
-            error_log.innerText = "";
-        }, 2000);
-    }
     var Songs = fs.readdirSync("./songs/");
 
     function PlayMusicWrap() {
@@ -92,8 +80,7 @@ setTimeout(function() { //see how that works?
         client.emit("playMusic");
     }
     var nfyPlaylist = new playlist(Songs, function(newIndex) {
-        // play next song on change
-        
+
         if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) { // hmm,
             if (songBuffer !== null) {
                 console.log("PLAYING");
@@ -108,22 +95,21 @@ setTimeout(function() { //see how that works?
         }
 
     });
-    // move through playlist
     client.on('MovePlaylist', () => {
-        if (nfyPlaylist.peekNext()===null) {
+        if (nfyPlaylist.peekNext() === null) {
             nfyPlaylist.setIndex(0)
             songBuffer = null
             client.emit('playMusic')
         }
-        if (songBuffer !== null) { songBuffer.pause(); // force pause
-        PLAYING = false;
-        play_button.innerText = "play"
-        }   
+        if (songBuffer !== null) {
+            songBuffer.pause();
+            PLAYING = false;
+            play_button.innerText = "play"
+        }
         songBuffer = null
         if (nfyPlaylist.peekNext() !== null || nfyPlaylist.peekNext() !== undefined) {
-            /// 
 
-            console.log(`Song: ${nfyPlaylist.peekNext()}`); // try looking at this line
+            console.log(`Song: ${nfyPlaylist.peekNext()}`);
             if (nfyPlaylist.peekNext() === undefined || nfyPlaylist.peekNext() === null) {
                 console.log("FAILED CHECK");
                 nfyPlaylist.setIndex(0);
@@ -131,7 +117,7 @@ setTimeout(function() { //see how that works?
                 client.emit("playMusic")
             } else {
                 console.log("PASSED");
-                nfyPlaylist.moveByOne(); //.
+                nfyPlaylist.moveByOne();
                 songBuffer = null;
                 client.emit('playMusic');
             }
@@ -153,26 +139,21 @@ setTimeout(function() { //see how that works?
         if (nfyPlaylist.getCurrentSong() === null) {
             nfyPlaylist.setIndex(0);
 
-        } //try again
-
-
-        //what is this for idk
-        // wait that's handled already you don't need that
-        ///why
+        }
 
         let song = `./songs/${nfyPlaylist.getCurrentSong()}`;
 
-        // time_handler.innerText = time;
+        var song_name_element = document.getElementById("song_name");
+        var song_nameWE = path.parse(path.basename(song)).name;
 
-        // among us
-        //tryit
-        // 
+        song_name_element.innerText = song_nameWE;
+
         if (songBuffer !== null && PLAYING) songBuffer.pause();
 
         fs.exists(song, () => {
             if (!PLAYING) {
 
-                if (songBuffer === null) { // first time playing 
+                if (songBuffer === null) {
                     songBuffer = new Audio(song);
 
                     songBuffer.play();
@@ -180,7 +161,7 @@ setTimeout(function() { //see how that works?
                     PLAYING = true
                     play_button.innerText = "stop";
                 } else {
-                    if (songBuffer !== null) { // second, third, if stopped then play
+                    if (songBuffer !== null) {
                         songBuffer.play();
                         play_button.innerText = "stop";
                     }
@@ -192,10 +173,10 @@ setTimeout(function() { //see how that works?
                     let p = document.getElementById("time_handler");
                     if (nfyPlaylist.getCurrentSong() === null) {
                         nfyPlaylist.setIndex(0);
-                        PlayMusicWrap() // idk bro juas try it
-                    } //among us balls
+                        PlayMusicWrap()
+                    }
                     if (songBuffer) {
-                        let time = parse_time(songBuffer.currentTime) + " - " + parse_time(songBuffer.duration); // done:)
+                        let time = parse_time(songBuffer.currentTime) + " - " + parse_time(songBuffer.duration);
 
                         console.log("HELLO " + time);
                         console.log(songBuffer.duration);
@@ -207,13 +188,12 @@ setTimeout(function() { //see how that works?
 
 
                 songBuffer.onended = function() {
-                    if (IN_PLAYLIST) {
-
-                        if (nfyPlaylist.nextExists()) {
-                            console.log("hello")
-                            nfyPlaylist.moveByOne();
-                            PlayMusicWrap()
-                        }
+                    if (LOOPING) {
+                        PlayMusicWrap();
+                    } else if (nfyPlaylist.nextExists() && !LOOPING) {
+                        console.log("hello")
+                        nfyPlaylist.moveByOne();
+                        PlayMusicWrap()
                     }
                 }
 
@@ -233,13 +213,4 @@ setTimeout(function() { //see how that works?
         })
     })
 
-    // done with prototype
-    // all you need to do is connect the events to backend
-    // however you did the music one
-    // and what should happen, is when you press play, it will load first in array
-    // then you can move in the array and play other songs in the array
-
 }, 0);
-// just implemented song search
-// based on standard
-// RPC.login({ clientID }).catch(console.error);

@@ -78,10 +78,3 @@ button:active {
     font-family: Uni Sans;
     font-size: 25px;
 }
-
-#ERROR_LOG {
-    color: #930101;
-    font-size: 30px;
-    font-family: Uni Sans;
-    text-shadow: 6px 6px #4c4c4c0e;
-}
