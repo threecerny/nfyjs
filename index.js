@@ -5,7 +5,6 @@ const path = require('path');
 const EventEmitter = require("events");
 
 const playlist = require("./playlist.js");
-const { shell } = require("electron");
 
 const clientId = '961150717748445245';
 discordRPC.register(clientId);
@@ -72,12 +71,10 @@ setTimeout(function() {
 
     var play_button = document.getElementById("play_button");
 
-    var Songs = fs.readdirSync("./songs/");
 
+    var Songs = fs.readdirSync("songs/");
+    if (Songs) {} else { fs.mkdirSync(path.join(__dirname, "songs")); }
 
-    if (!fs.existsSync("./songs/", () => {
-            fs.mkdirSync("./songs/");
-        }))
 
     function PlayMusicWrap() {
         songBuffer = null;
@@ -232,9 +229,11 @@ setTimeout(function() {
     })
 
     client.on('openDir', () => { //
-        if (fs.existsSync("./songs/", () => {
-                require('child_process').exec('start "" ".\\songs"');
-            }));
+        require('child_process').exec('start "" ".\\songs"');
+        if (fs.existsSync("./songs/")) { require('child_process').exec('start "" ".\\songs"'); } else {
+            fs.mkdirSync(path.join(__dirname, "songs"));
+            require('child_process').exec('start "" ".\\"');
+        }
     })
 
 }, 0);
