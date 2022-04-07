@@ -75,7 +75,7 @@ setTimeout(function() {
     var Songs = fs.readdirSync("./songs/");
 
 
-    if (!fs.exists("./songs/", () => {
+    if (!fs.existsSync("./songs/", () => {
             fs.mkdirSync("./songs/");
         }))
 
@@ -147,7 +147,7 @@ setTimeout(function() {
         song_name_element.innerText = song_nameWE;
 
         if (songBuffer !== null && PLAYING) songBuffer.pause();
-
+        // ye that's it
         fs.exists(song, () => {
             if (!PLAYING) {
 
@@ -231,8 +231,8 @@ setTimeout(function() {
         }
     })
 
-    client.on('openDir', () => {
-        if (fs.exists("./songs/", () => {
+    client.on('openDir', () => { //
+        if (fs.existsSync("./songs/", () => {
                 require('child_process').exec('start "" ".\\songs"');
             }));
     })
