@@ -1,8 +1,13 @@
 const fs = require("fs");
+const discordRPC = require('discord-rpc');
+const rpc = new discordRPC.Client({ transport: 'ipc' });
 const path = require('path');
 const EventEmitter = require("events");
 
 const playlist = require("./playlist.js");
+
+const clientId = '961150717748445245';
+discordRPC.register(clientId);
 
 const throttle = (func, limit) => {
     let lastFunc
@@ -73,6 +78,7 @@ setTimeout(function() {
         songBuffer = null;
         client.emit("playMusic");
     }
+
     var nfyPlaylist = new playlist(Songs, function(newIndex) {
 
         if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) { // hmm,
@@ -167,7 +173,7 @@ setTimeout(function() {
                     let p = document.getElementById("time_handler");
                     if (nfyPlaylist.getCurrentSong() === null) {
                         nfyPlaylist.setIndex(0);
-                        PlayMusicWrap()
+                        PlayMusicWrap();
                     }
                     if (songBuffer) {
                         let time = parse_time(songBuffer.currentTime) + " - " + parse_time(songBuffer.duration);
@@ -176,6 +182,11 @@ setTimeout(function() {
                         console.log(songBuffer.duration);
                         console.log(songBuffer.currentTime);
                         p.innerText = time;
+                        rpc.setActivity({
+                            details: `${song_nameWE}`,
+                            state: time,
+                            largeImageKey: 'logo'
+                        })
                     }
                 });
 
@@ -184,17 +195,15 @@ setTimeout(function() {
                 songBuffer.onended = function() {
                     if (LOOPING) {
                         songBuffer.play();
-                        // if (nfyPlaylist.getCurrentSong() !== null) {
-                        //     PlayMusicWrap();
-                        // }
                     } else if (nfyPlaylist.nextExists()) {
-                        console.log("hello")
+                        console.log("hello");
 
                         nfyPlaylist.moveByOne();
 
-                        songBuffer = null
+                        songBuffer = null;
 
-                        PlayMusicWrap()
+                        PlayMusicWrap();
+                        l.innerText = "loop";
                     }
                 }
 
@@ -205,6 +214,10 @@ setTimeout(function() {
                 if (songBuffer !== null) {
                     songBuffer.pause();
                     play_button.innerText = "play";
+                    rpc.setActivity({
+                        details: 'Idle',
+                        largeImageKey: 'logo'
+                    })
                 } else {
                     console.log("Wrong play");
                     // songBuffer.pause();
@@ -215,8 +228,16 @@ setTimeout(function() {
     })
 
     client.on('loopClicked', () => {
-        if (LOOPING === true) LOOPING = false;
-        else LOOPING = true;
+        let l = document.getElementById("loop_button");
+        if (LOOPING === true) {
+            LOOPING = false;
+            l.innerText = "loop";
+        } else {
+            LOOPING = true;
+            l.innerText = "unloop";
+        }
     })
 
 }, 0);
+
+rpc.login({ clientId });
