@@ -13,7 +13,6 @@ function createWin() {
         }
     });
     window.loadFile('index.html'); // entry point
-    // window.setMenu(null);
 };
 
 electron.app.whenReady().then(() => {
