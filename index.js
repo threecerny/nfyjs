@@ -180,7 +180,7 @@ setTimeout(function() {
                         rpc.setActivity({
                             details: `${song_nameWE}`,
                             state: time,
-                            largeImageKey: 'logo'
+                            largeImageKey: 'real'
                         })
                     }
                 });
@@ -210,7 +210,7 @@ setTimeout(function() {
                     play_button.innerText = "play";
                     rpc.setActivity({
                         details: 'Idle',
-                        largeImageKey: 'logo'
+                        largeImageKey: 'real'
                     })
                 } else {
                     // songBuffer.pause();
