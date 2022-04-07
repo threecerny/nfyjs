@@ -78,26 +78,3 @@ button:active {
     font-family: Uni Sans;
     font-size: 25px;
 }
-
-#directory {
-    border-radius: 2px;
-    border: 1px solid #3C45A5;
-    background-color: #3C45A5;
-    color: #FFF5FC;
-    padding-bottom: 12px;
-    padding-top: 12px;
-    padding-left: 60px;
-    padding-right: 60px;
-    text-align: center;
-    bottom: 10px;
-}
-
-#directory_error {
-    color: rgb(186, 62, 62);
-    font-size: 20px;
-    font-family: Uni Sans;
-}
-
-::placeholder {
-    color: #c2c2c2;
-}

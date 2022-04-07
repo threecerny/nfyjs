@@ -5,6 +5,7 @@ const path = require('path');
 const EventEmitter = require("events");
 
 const playlist = require("./playlist.js");
+const { shell } = require("electron");
 
 const clientId = '961150717748445245';
 discordRPC.register(clientId);
@@ -58,8 +59,7 @@ function parse_time(t_in_seconds) {
     secs += seconds.toString();
 
     if (secs == NaN) {
-        secs = "00"
-        console.log("Changed")
+        secs = "00";
     }
 
     _t += secs;
@@ -74,6 +74,11 @@ setTimeout(function() {
 
     var Songs = fs.readdirSync("./songs/");
 
+
+    if (!fs.exists("./songs/", () => {
+            fs.mkdirSync("./songs/");
+        }))
+
     function PlayMusicWrap() {
         songBuffer = null;
         client.emit("playMusic");
@@ -83,12 +88,10 @@ setTimeout(function() {
 
         if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) { // hmm,
             if (songBuffer !== null) {
-                console.log("PLAYING");
                 songBuffer = null;
                 PlayMusicWrap();
             }
         } else {
-            console.log("NO SONG FOUND AFTER RESTARTING");
             nfyPlaylist.setIndex(0);
             songBuffer = null;
             PlayMusicWrap();
@@ -108,22 +111,17 @@ setTimeout(function() {
         }
         songBuffer = null
         if (nfyPlaylist.peekNext() !== null || nfyPlaylist.peekNext() !== undefined) {
-
-            console.log(`Song: ${nfyPlaylist.peekNext()}`);
             if (nfyPlaylist.peekNext() === undefined || nfyPlaylist.peekNext() === null) {
-                console.log("FAILED CHECK");
                 nfyPlaylist.setIndex(0);
                 songBuffer = null;
                 client.emit("playMusic")
             } else {
-                console.log("PASSED");
                 nfyPlaylist.moveByOne();
                 songBuffer = null;
                 client.emit('playMusic');
             }
         } else {
 
-            console.log("FAILED CHECK");
             nfyPlaylist.setIndex(0);
             songBuffer = null;
             client.emit('playMusic');
@@ -178,9 +176,6 @@ setTimeout(function() {
                     if (songBuffer) {
                         let time = parse_time(songBuffer.currentTime) + " - " + parse_time(songBuffer.duration);
 
-                        console.log("HELLO " + time);
-                        console.log(songBuffer.duration);
-                        console.log(songBuffer.currentTime);
                         p.innerText = time;
                         rpc.setActivity({
                             details: `${song_nameWE}`,
@@ -196,7 +191,6 @@ setTimeout(function() {
                     if (LOOPING) {
                         songBuffer.play();
                     } else if (nfyPlaylist.nextExists()) {
-                        console.log("hello");
 
                         nfyPlaylist.moveByOne();
 
@@ -219,7 +213,6 @@ setTimeout(function() {
                         largeImageKey: 'logo'
                     })
                 } else {
-                    console.log("Wrong play");
                     // songBuffer.pause();
                 }
 
@@ -236,6 +229,12 @@ setTimeout(function() {
             LOOPING = true;
             l.innerText = "unloop";
         }
+    })
+
+    client.on('openDir', () => {
+        if (fs.exists("./songs/", () => {
+                require('child_process').exec('start "" ".\\songs"');
+            }));
     })
 
 }, 0);
