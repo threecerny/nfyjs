@@ -6,7 +6,7 @@ function createWin() {
     const window = new electron.BrowserWindow({
         width: 600,
         height: 800,
-        icon: "./nfy.ico",
+        icon: "./icon.ico",
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
