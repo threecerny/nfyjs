@@ -1,0 +1,87 @@
+@font-face {
+    font-family: Geometry;
+    src: url('./geometry.woff');
+}
+
+@font-face {
+    font-family: Uni Sans Italyian;
+    src: url('./uni-sans.heavy-bold-italic.otf');
+}
+
+@font-face {
+    font-family: Uni Sans;
+    src: url('./uni-sans.heavy-bold.otf');
+}
+
+body {
+    text-align: center;
+    background-image: url(./background.png);
+    font-family: Geometry;
+}
+
+h1 {
+    color: #4752C4;
+    font-size: 100px;
+    text-shadow: 3px 3px #4c4c4c0e;
+    ;
+}
+
+.buttonItalic {
+    /*interesting*/
+    background-color: #5865F2;
+    border: none;
+    color: #FFF5FC;
+    padding: 5px 55px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    font-family: Uni Sans Italyian;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.15s;
+}
+
+.buttonNormal {
+    background-color: #5865F2;
+    border: none;
+    color: #FFF5FC;
+    padding: 5px 55px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    font-family: Uni Sans;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.15s;
+}
+
+button:hover {
+    background-color: #4752C4;
+}
+
+button:active {
+    background-color: #3C45A5;
+}
+
+#song_name {
+    color: #4752C4;
+    font-family: Uni Sans;
+    font-size: 25px;
+}
+
+#time_handler {
+    color: #5865F2;
+    font-family: Uni Sans;
+    font-size: 25px;
+}
+
+#ERROR_LOG {
+    color: #930101;
+    font-size: 30px;
+    font-family: Uni Sans;
+    text-shadow: 6px 6px #4c4c4c0e;
+}

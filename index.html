@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>NFY</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <h1 id="title">NFY</h1>
+
+    <br>
+    <br>
+
+    <!--TODO: Fix this up-->
+    <button onclick="client.emit('playMusic');" class="buttonItalic" id="play_button">Play</button>
+
+    <br>
+
+    <button onclick="client.emit('MovePlaylist'); " class="buttonNormal">Move to Next Song</button>
+
+    <br>
+
+    <p id="ERROR_LOG "></p>
+
+    <br>
+    <br>
+    <br>
+
+    <p id="song_name"></p>
+
+    <p id="time_handler"> </p>
+
+
+    <script src="index.js"></script>
+
+</body>
+
+</html>
