@@ -50,7 +50,7 @@ function parse_time(t_in_seconds) {
     let _t = "";
     var minutes = ~~((time % 3600) / 60);;
     var seconds = parseInt(time % 60);
-
+    if (seconds == NaN) { seconds = 0}
     let secs = "" //test it
 
     _t += parseInt(minutes.toString()) + ":";
@@ -58,10 +58,17 @@ function parse_time(t_in_seconds) {
     if (seconds < 10) {
         secs += "0";
     }
-
+    
     secs += seconds.toString();
 
+    if (secs == NaN)  {
+        secs = "00"
+        console.log("Changed")
+    }
+
     _t += secs;
+
+
     return _t;
 }
 
@@ -86,6 +93,7 @@ setTimeout(function() { //see how that works?
     }
     var nfyPlaylist = new playlist(Songs, function(newIndex) {
         // play next song on change
+        
         if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) { // hmm,
             if (songBuffer !== null) {
                 console.log("PLAYING");
@@ -102,8 +110,16 @@ setTimeout(function() { //see how that works?
     });
     // move through playlist
     client.on('MovePlaylist', () => {
-        if (songBuffer !== null) songBuffer.pause(); // force pause
-
+        if (nfyPlaylist.peekNext()===null) {
+            nfyPlaylist.setIndex(0)
+            songBuffer = null
+            client.emit('playMusic')
+        }
+        if (songBuffer !== null) { songBuffer.pause(); // force pause
+        PLAYING = false;
+        play_button.innerText = "play"
+        }   
+        songBuffer = null
         if (nfyPlaylist.peekNext() !== null || nfyPlaylist.peekNext() !== undefined) {
             /// 
 
