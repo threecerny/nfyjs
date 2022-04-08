@@ -12,11 +12,7 @@
     <br>
     <br>
 
-    <button onclick="client.emit('playMusic');" class="buttonItalic" id="play_button">Play</button>
-
-    <br>
-
-    <button class="buttonNormal" id="loop_button" onclick="client.emit('loopClicked');">Loop</button>
+    <button onclick="client.emit('playMusic');" class="buttonItalic" id="play_button">Play</button> <button class="buttonNormal" id="loop_button" onclick="client.emit('loopClicked');">Loop</button>
 
     <br>
 
@@ -24,7 +20,11 @@
 
     <br>
 
-    <button class="buttonNormal" onclick="client.emit('openDir');" id="open_dir">Open Directory</button>
+    <button class="buttonNormal" onclick="client.emit('openDir');">Open Directory</button>
+
+    <br>
+
+    <button class="buttonNormal" onclick="client.emit('reloadDirectory');">Reload songs</button>
 
     <br>
     <br>

@@ -78,10 +78,3 @@ button:active {
     font-family: Uni Sans;
     font-size: 25px;
 }
-
-#open_dir {
-    padding-left: 60px;
-    padding-right: 60px;
-    text-align: center;
-    bottom: 10px;
-}

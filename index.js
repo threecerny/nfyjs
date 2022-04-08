@@ -136,8 +136,8 @@ setTimeout(function() {
 
         if (nfyPlaylist.getCurrentSong() == null) {
             nfyPlaylist.setIndex(0);
-            songBuffer = null
-            client.emit('playMusic')
+            songBuffer = null;
+            client.emit('playMusic');
         }
 
         let song = `./songs/${nfyPlaylist.getCurrentSong()}`;
@@ -238,6 +238,11 @@ setTimeout(function() {
             fs.mkdirSync("./songs/");
             require('child_process').exec('start "" ".\\"');
         }
+    })
+
+    client.on("reloadDirectory", () => {
+        Songs = fs.readdirSync("./songs/");
+        nfyPlaylist = new playlist(Songs, () => {});
     })
 
 }, 0);
