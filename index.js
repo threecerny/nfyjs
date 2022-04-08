@@ -70,10 +70,13 @@ function parse_time(t_in_seconds) {
 setTimeout(function() {
 
     var play_button = document.getElementById("play_button");
+    var Songs = null;
 
+    if (!fs.existsSync("./songs/")) {
+        fs.mkdirSync("./songs/");
+    }
+    Songs = fs.readdirSync("./songs")
 
-    var Songs = fs.readdirSync("songs/");
-    if (Songs) {} else { fs.mkdirSync(path.join(__dirname, "songs")); }
 
 
     function PlayMusicWrap() {
@@ -131,9 +134,10 @@ setTimeout(function() {
 
     client.on('playMusic', () => {
 
-        if (nfyPlaylist.getCurrentSong() === null) {
+        if (nfyPlaylist.getCurrentSong() == null) {
             nfyPlaylist.setIndex(0);
-
+            songBuffer = null
+            client.emit('playMusic')
         }
 
         let song = `./songs/${nfyPlaylist.getCurrentSong()}`;
@@ -148,7 +152,7 @@ setTimeout(function() {
         fs.exists(song, () => {
             if (!PLAYING) {
 
-                if (songBuffer === null) {
+                if (songBuffer == null) {
                     songBuffer = new Audio(song);
 
                     songBuffer.play();
@@ -156,7 +160,7 @@ setTimeout(function() {
                     PLAYING = true
                     play_button.innerText = "stop";
                 } else {
-                    if (songBuffer !== null) {
+                    if (songBuffer != null) {
                         songBuffer.play();
                         play_button.innerText = "stop";
                     }
@@ -202,7 +206,7 @@ setTimeout(function() {
             } else {
 
                 PLAYING = false;
-                if (songBuffer !== null) {
+                if (songBuffer != null) {
                     songBuffer.pause();
                     play_button.innerText = "play";
                     rpc.setActivity({
@@ -231,7 +235,7 @@ setTimeout(function() {
     client.on('openDir', () => { //
         require('child_process').exec('start "" ".\\songs"');
         if (fs.existsSync("./songs/")) { require('child_process').exec('start "" ".\\songs"'); } else {
-            fs.mkdirSync(path.join(__dirname, "songs"));
+            fs.mkdirSync("./songs/");
             require('child_process').exec('start "" ".\\"');
         }
     })

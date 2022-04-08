@@ -18,7 +18,6 @@ function createWin() {
 
 electron.app.whenReady().then(() => {
     createWin();
-    if (fs.existsSync('./songs/')) {} else { fs.mkdirSync(path.join(__dirname, "songs")); }
 
     electron.app.on('activate', () => {
         if (electron.BrowserWindow.getAllWindows().length === 0) createWin(); // if no window (create one)
