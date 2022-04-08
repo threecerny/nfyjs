@@ -33,10 +33,10 @@ const throttle = (func, limit) => {
 const client = new EventEmitter();
 
 var PLAYING = false;
-var IN_PLAYLIST = false; //;
+var IN_PLAYLIST = false;
 var LOOPING = false
 
-let songBuffer = null; // rip
+let songBuffer = null;
 
 var i = 0;
 var max = 0;
@@ -86,7 +86,7 @@ setTimeout(function() {
 
     var nfyPlaylist = new playlist(Songs, function(newIndex) {
 
-        if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) { // hmm,
+        if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) {
             if (songBuffer !== null) {
                 songBuffer = null;
                 PlayMusicWrap();
@@ -148,7 +148,7 @@ setTimeout(function() {
         song_name_element.innerText = song_nameWE;
 
         if (songBuffer !== null && PLAYING) songBuffer.pause();
-        // ye that's it
+
         fs.exists(song, () => {
             if (!PLAYING) {
 
@@ -213,10 +213,7 @@ setTimeout(function() {
                         details: 'Idle',
                         largeImageKey: 'real'
                     })
-                } else {
-                    // songBuffer.pause();
-                }
-
+                } else {}
             }
         })
     })
@@ -232,7 +229,7 @@ setTimeout(function() {
         }
     })
 
-    client.on('openDir', () => { //
+    client.on('openDir', () => {
         require('child_process').exec('start "" ".\\songs"');
         if (fs.existsSync("./songs/")) { require('child_process').exec('start "" ".\\songs"'); } else {
             fs.mkdirSync("./songs/");
