@@ -240,11 +240,6 @@ setTimeout(function() {
         }
     })
 
-    client.on("reloadDirectory", () => {
-        Songs = fs.readdirSync("./songs/");
-        nfyPlaylist = new playlist(Songs, () => {});
-    })
-
 }, 0);
 
 rpc.login({ clientId });
