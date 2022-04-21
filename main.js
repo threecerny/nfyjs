@@ -13,11 +13,14 @@ function createWin() {
         }
     });
     window.loadFile('index.html'); // entry point
-    window.setMenu(null);
+    window.webContents.send('userData', app.getPath('userData'));
+    window.webContents.send('backup', app.getPath('userData'));
 };
 
 electron.app.whenReady().then(() => {
     createWin();
+
+    fs.mkdirSync(path.join(app.getPath('userData'), 'songs'));
 
     electron.app.on('activate', () => {
         if (electron.BrowserWindow.getAllWindows().length === 0) createWin(); // if no window (create one)

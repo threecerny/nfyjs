@@ -9,28 +9,9 @@ const playlist = require("./playlist.js");
 const clientId = '961150717748445245';
 discordRPC.register(clientId);
 
-const throttle = (func, limit) => {
-    let lastFunc
-    let lastRan
-    return function() {
-        const context = this
-        const args = arguments
-        if (!lastRan) {
-            func.apply(context, args)
-            lastRan = Date.now()
-        } else {
-            clearTimeout(lastFunc)
-            lastFunc = setTimeout(function() {
-                if ((Date.now() - lastRan) >= limit) {
-                    func.apply(context, args)
-                    lastRan = Date.now()
-                }
-            }, limit - (Date.now() - lastRan))
-        }
-    }
-}
-
 const client = new EventEmitter();
+
+const { ipcRenderer } = require('electron');
 
 var PLAYING = false;
 var IN_PLAYLIST = false;
@@ -70,14 +51,14 @@ function parse_time(t_in_seconds) {
 setTimeout(function() {
 
     var play_button = document.getElementById("play_button");
-    var Songs = null;
 
-    if (!fs.existsSync("./songs/")) {
-        fs.mkdirSync("./songs/");
-    }
-    Songs = fs.readdirSync("./songs")
+    var Songs;
 
+    Songs = null;
 
+    ipcRenderer.on('userData', (_event, data) => {
+        Songs = data;
+    })
 
     function PlayMusicWrap() {
         songBuffer = null;
@@ -130,8 +111,6 @@ setTimeout(function() {
 
     })
 
-
-
     client.on('playMusic', () => {
 
         if (nfyPlaylist.getCurrentSong() == null) {
@@ -140,7 +119,7 @@ setTimeout(function() {
             client.emit('playMusic');
         }
 
-        let song = `./songs/${nfyPlaylist.getCurrentSong()}`;
+        let song = `${Songs}${nfyPlaylist.getCurrentSong()}`;
 
         var song_name_element = document.getElementById("song_name");
         var song_nameWE = path.parse(path.basename(song)).name;
@@ -230,13 +209,16 @@ setTimeout(function() {
     })
 
     client.on('openDir', () => {
-        require('child_process').exec('start "" ".\\songs"');
-        if (fs.existsSync("./songs/")) { require('child_process').exec('start "" ".\\songs"'); } else {
-            fs.mkdirSync("./songs/");
-            require('child_process').exec('start "" ".\\"');
-        }
+        ipcRenderer.on('backup', (_event, data) => {
+            if (fs.existsSync(path.join(data, 'songs'))) {
+                require('child_process').exec(`start "" ${data}/songs/"`);
+            } else {
+                fs.mkdirSync(path.join(data, '/songs'));
+                require('child_process').exec(`start "" ${data}/songs/"`);
+            }
+        }) 
+        // remove unneccessary check
     })
-
 }, 0);
 
 rpc.login({ clientId });
