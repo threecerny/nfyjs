@@ -6,7 +6,7 @@
     "build": {
         "appId": "com.electron.NFyJS",
         "productName": "NFyJS",
-        "icon": "./icon.ico"
+        "icon": "./icon.png"
     },
     "scripts": {
         "start": "electron .",

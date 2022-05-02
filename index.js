@@ -11,8 +11,6 @@ discordRPC.register(clientId);
 
 const client = new EventEmitter();
 
-const { ipcRenderer } = require('electron');
-
 var PLAYING = false;
 var IN_PLAYLIST = false;
 var LOOPING = false
@@ -48,37 +46,50 @@ function parse_time(t_in_seconds) {
     return _t;
 }
 
+let dir_input = document.getElementById("dir_input");
+
+if (localStorage.getItem("dir") != null) {
+    dir_input.value = localStorage.getItem("dir");
+} else {
+    dir_input.value = "";
+}
+
 setTimeout(function() {
 
     var play_button = document.getElementById("play_button");
 
     var Songs;
-
-    Songs = null;
-
-    ipcRenderer.on('userData', (_event, data) => {
-        Songs = data;
-    })
-
+    
     function PlayMusicWrap() {
         songBuffer = null;
         client.emit("playMusic");
     }
+    
+    Songs = null;
 
-    var nfyPlaylist = new playlist(Songs, function(newIndex) {
+    dir_input.addEventListener("change", function(event) {
+        let dir = document.getElementById("dir_input");
 
-        if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) {
-            if (songBuffer !== null) {
+        localStorage.setItem("dir", dir.value);
+
+        Songs = dir.value;
+        nfyPlaylist = new playlist(fs.readdirSync(Songs), function(newIndex) {
+
+            if (nfyPlaylist.getCurrentSong() !== null || nfyPlaylist.getCurrentSong() !== undefined) {
+                if (songBuffer !== null) {
+                    songBuffer = null;
+                    PlayMusicWrap();
+                }
+            } else {
+                nfyPlaylist.setIndex(0);
                 songBuffer = null;
                 PlayMusicWrap();
             }
-        } else {
-            nfyPlaylist.setIndex(0);
-            songBuffer = null;
-            PlayMusicWrap();
-        }
-
+    
+        });
     });
+
+    var nfyPlaylist = null
     client.on('MovePlaylist', () => {
         if (nfyPlaylist.peekNext() === null) {
             nfyPlaylist.setIndex(0)
@@ -119,7 +130,7 @@ setTimeout(function() {
             client.emit('playMusic');
         }
 
-        let song = `${Songs}${nfyPlaylist.getCurrentSong()}`;
+        let song = `${Songs}\\${nfyPlaylist.getCurrentSong()}`;
 
         var song_name_element = document.getElementById("song_name");
         var song_nameWE = path.parse(path.basename(song)).name;
@@ -209,15 +220,11 @@ setTimeout(function() {
     })
 
     client.on('openDir', () => {
-        ipcRenderer.on('backup', (_event, data) => {
-            if (fs.existsSync(path.join(data, 'songs'))) {
-                require('child_process').exec(`start "" ${data}/songs/"`);
-            } else {
-                fs.mkdirSync(path.join(data, '/songs'));
-                require('child_process').exec(`start "" ${data}/songs/"`);
-            }
-        }) 
-        // remove unneccessary check
+        if (fs.existsSync(Songs)) {
+            require('child_process').exec(`start "" ${Songs}"`);
+        } else {
+            alert("Directory does not exist");
+        }
     })
 }, 0);
 

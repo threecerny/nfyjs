@@ -6,21 +6,17 @@ function createWin() {
     const window = new electron.BrowserWindow({
         width: 600,
         height: 800,
-        icon: "./icon.ico",
+        icon: "./icon.png",
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
         }
     });
     window.loadFile('index.html'); // entry point
-    window.webContents.send('userData', app.getPath('userData'));
-    window.webContents.send('backup', app.getPath('userData'));
 };
 
 electron.app.whenReady().then(() => {
     createWin();
-
-    fs.mkdirSync(path.join(app.getPath('userData'), 'songs'));
 
     electron.app.on('activate', () => {
         if (electron.BrowserWindow.getAllWindows().length === 0) createWin(); // if no window (create one)
