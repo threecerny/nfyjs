@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NFy</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <h1 id="title">NFy JS</h1>
+
+    <br>
+    <br>
+
+    <div id="loading">
+        <div id="loading-top">
+            <p>NFy JS</p>
+        </div>
+        <div id="loading-text">
+            <p>Made by:</p>
+            <p id="author"></p>
+        </div>
+    </div>
+
+    <div id="song">
+        <img id="song-cover" src="./images/cover.png">
+        <div id="song-info">
+            <h2 id="song-title"></h2>
+            <h3 id="song-time"></h3>
+        </div>
+    </div>
+
+    <div id="bottom-bar">
+        <button id="loopButton">
+            <svg id="loopImage1" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="256" height="256" preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8"><path fill="#fff" d="M4 1C2.35 1 1 2.35 1 4H0l1.5 2L3 4H2c0-1.11.89-2 2-2V1zm2.5 1L5 4h1c0 1.11-.89 2-2 2v1c1.65 0 3-1.35 3-3h1L6.5 2z"/></svg>
+            <svg id="loopImage2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="256" height="256" preserveAspectRatio="xMidYMid meet" viewBox="0 0 8 8"><path fill="#f0d463" d="M4 1C2.35 1 1 2.35 1 4H0l1.5 2L3 4H2c0-1.11.89-2 2-2V1zm2.5 1L5 4h1c0 1.11-.89 2-2 2v1c1.65 0 3-1.35 3-3h1L6.5 2z"/></svg>
+        </button>
+        
+        <button id="prevButton">
+            <img id="prevImage">
+        </button>
+
+        <button id="playButton">
+            <img id="playImage">
+        </button>
+
+        <button id="nextButton">
+            <img id="nextImage">
+        </button>
+
+        <button id="dirButton">
+            <svg id="dirClosed" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="256" height="256" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="#fff" d="M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75z"/></svg>
+            <svg id="dirOpen" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="256" height="256" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="#fff" d="M.513 1.513A1.75 1.75 0 0 1 1.75 1h3.5c.55 0 1.07.26 1.4.7l.9 1.2a.25.25 0 0 0 .2.1H13a1 1 0 0 1 1 1v.5H2.75a.75.75 0 0 0 0 1.5h11.978a1 1 0 0 1 .994 1.117L15 13.25A1.75 1.75 0 0 1 13.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75c0-.464.184-.91.513-1.237z"/></svg>
+        </button>
+    </div>
+</body>
+
+</html>

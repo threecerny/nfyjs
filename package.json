@@ -1,0 +1,26 @@
+{
+    "name": "nfyjs",
+    "version": "0.0.5",
+    "description": "windows media payer but fancy and can only play music",
+    "main": "main.js",
+    "build": {
+        "appId": "com.electron.NFyJS",
+        "productName": "NFyJS",
+        "icon": "./icon.ico"
+    },
+    "scripts": {
+        "start": "electron .",
+        "dist": "electron-builder",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "electron": "^18.0.1",
+        "electron-builder": "^22.13.1"
+    },
+    "dependencies": {
+        "discord-rpc": "^4.0.1",
+        "electron.js": "^0.0.1",
+        "fs": "^0.0.1-security",
+        "path": "^0.12.7"
+    }
+}
