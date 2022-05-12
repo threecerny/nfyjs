@@ -49,18 +49,4 @@ module.exports = class {
     peekPrev() {
         return this.priv[this.idx - 1];
     }
-        // check randomizes the playlist
-    shuffle() {
-        let currentIndex = this.priv.length, temporaryValue, randomIndex;
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            temporaryValue = this.priv[currentIndex];
-            this.priv[currentIndex] = this.priv[randomIndex];
-            this.priv[randomIndex] = temporaryValue;
-        }
-
-        this.idx = 0;
-        this.onidchange(this.idx);
-    }
 }

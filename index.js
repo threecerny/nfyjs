@@ -220,7 +220,7 @@ window.onload = function () {
                 nfyPlaylist.setIndex(0);
                 songBuffer = null;
             } else {
-                nfyPlaylist.moveByOne();
+                nfyPlaylist.removeByOne();
                 PlayMusicWrap();
                 playing = true;
             }
@@ -333,11 +333,6 @@ window.onload = function () {
         }
     })
 
-    client.on("shuffleClicked", () => {
-        nfyPlaylist.shuffle();
-        PlayMusicWrap();
-    })
-
     client.on("openDir", () => {
         if (fs.existsSync(Songs)) {
             require("child_process").exec(`start "" ${Songs}`);
@@ -367,10 +362,6 @@ window.onload = function () {
     loopButton.addEventListener("click", function() {
         client.emit("loopClicked");
     });
-
-    shuffleButton.addEventListener("click", function() {
-        client.emit("shuffleClicked");
-    })
 
     dirButton.addEventListener("click", function() {
         client.emit("openDir");
