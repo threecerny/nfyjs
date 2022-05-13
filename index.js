@@ -233,9 +233,7 @@ window.onload = function () {
 
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
-            nfyPlaylist.setIndex(0);
-            songBuffer = null;
-            client.emit("playMusic");
+            return /* fix infinite attempts for null playlist */
         }
 
         let song = `${Songs}\\${nfyPlaylist.getCurrentSong()}`;
