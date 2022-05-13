@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const eventEmitter = require("events");
-
+const Mousetrap = require("mousetrap")
 const os = require("os");
 
 const playlist = require("./playlist.js");
@@ -56,6 +56,15 @@ function parse_time(t_in_seconds) {
 
 window.onload = function () {
 
+    Mousetrap.bind('left', () => {
+        if (songBuffer != null)
+            songBuffer.currentTime = (songBuffer.currentTime - 5);
+    })
+
+    Mousetrap.bind('right', () => {
+        if (songBuffer != null)
+            songBuffer.currentTime = (songBuffer.currentTime + 5);
+    })
     var Songs;
 
     Songs = null;
@@ -384,6 +393,12 @@ window.onload = function () {
     dirButton.addEventListener("click", function () {
         client.emit("openDir");
     });
+    const handleKeyPress = (event) => {
+        // You can put code here to handle the keypress.
+        console.log(`You pressed ${event.key}`);
+    }
+
+    window.addEventListener('keyup', handleKeyPress, true);
 }
 
 rpc.login({ clientId });
