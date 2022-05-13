@@ -251,7 +251,7 @@ window.onload = function () {
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
             nfyPlaylist.setIndex(0)
-            if (nfyPlaylist.getCurrentSong() == null) {
+            if (nfyPlaylist.getCurrentSong() == null) { /* still null? */
                 log("error: failed to load songs,\n" +
                     "do you have a songs directory in place?")
                 return /* fix infinite attempts for null playlist */
