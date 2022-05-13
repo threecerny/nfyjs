@@ -99,7 +99,7 @@ window.onload = function () {
     playImage.src = pauseSrc;
     prevImage.src = prevSrc;
     nextImage.src = nextSrc;
-    
+
     if (!fs.existsSync(`${homeDir}/.nfyJS`)) {
         fs.mkdirSync(`${homeDir}/.nfyJS`);
         dirPath = path.join(homeDir, ".nfyJS");
@@ -139,7 +139,7 @@ window.onload = function () {
     var nfyPlaylist = null
 
     client.on("start", () => {
-        nfyPlaylist = new playlist(fs.readdirSync(Songs), function(newIndex) {
+        nfyPlaylist = new playlist(fs.readdirSync(Songs), function (newIndex) {
             if (songBuffer !== null) {
                 songBuffer = null;
                 PlayMusicWrap();
@@ -180,8 +180,8 @@ window.onload = function () {
             }, 1000);
         }, 1000);
     }, 500);
-    
-    client.on("movePlaylist", () => { 
+
+    client.on("movePlaylist", () => {
         if (nfyPlaylist.peekNext() === null) {
             nfyPlaylist.setIndex(0);
             songBuffer = null;
@@ -241,7 +241,7 @@ window.onload = function () {
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
             log("error: failed to load songs,\n" +
-            "do you have a songs directory in place?")
+                "do you have a songs directory in place?")
             return /* fix infinite attempts for null playlist */
         }
 
@@ -254,7 +254,8 @@ window.onload = function () {
 
         if (songBuffer !== null && playing) songBuffer.pause();
 
-        fs.exists(song, () => {
+        fs.exists(song, (err) => {
+            if (err) { log("Node.js threw an unbeknownst exists() error."); return; }
             if (!playing) {
                 if (songBuffer == null) {
                     songBuffer = new Audio(song);
@@ -271,7 +272,7 @@ window.onload = function () {
                     playing = true;
                 }
 
-                songBuffer.addEventListener("timeupdate", function() {
+                songBuffer.addEventListener("timeupdate", function () {
                     let timeHandler = document.getElementById("song-time");
 
                     if (nfyPlaylist.getCurrentSong() === null) {
@@ -297,7 +298,7 @@ window.onload = function () {
                     }
                 });
 
-                songBuffer.onended = function() {
+                songBuffer.onended = function () {
                     if (looping) {
                         songBuffer.play();
                     } else if (nfyPlaylist.nextExists()) {
@@ -319,14 +320,14 @@ window.onload = function () {
                         smallImageKey: "js-logo",
                         smallImageText: "Sometimes I wish you would use NFy JS",
                         buttons: [{
-                            label: "Github", 
+                            label: "Github",
                             url: "https://github.com/Cliometric/NFY"
                         }]
                     })
                 }
             }
         })
-    })  
+    })
 
     client.on("loopClicked", () => {
         if (looping === true) {
@@ -359,27 +360,27 @@ window.onload = function () {
         }
     })
 
-    playButton.addEventListener("click", function() {
+    playButton.addEventListener("click", function () {
         client.emit("playMusic");
     });
 
-    prevButton.addEventListener("click", function() {
+    prevButton.addEventListener("click", function () {
         client.emit("removePlaylist");
     });
 
-    nextButton.addEventListener("click", function() {
+    nextButton.addEventListener("click", function () {
         client.emit("movePlaylist");
     });
 
-    loopButton.addEventListener("click", function() {
+    loopButton.addEventListener("click", function () {
         client.emit("loopClicked");
     });
 
-    shuffleButton.addEventListener("click", function() {
+    shuffleButton.addEventListener("click", function () {
         client.emit("shuffleClicked");
     })
 
-    dirButton.addEventListener("click", function() {
+    dirButton.addEventListener("click", function () {
         client.emit("openDir");
     });
 }
