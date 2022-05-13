@@ -357,7 +357,7 @@ window.onload = function () {
             fs.mkdirSync(`${dirPath}/songs`);
             songs = path.join(dirPath, "songs");
             config = path.join(dirPath, "config.json");
-            shell.openPath(Songs)
+            shell.openPath(songs)
         }
     })
 
