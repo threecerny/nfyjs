@@ -20,6 +20,13 @@ var looping = false;
 
 let songBuffer = null;
 
+function log(text) {
+    document.getElementById("LOG").innerText = text
+    setTimeout(() => {
+        document.getElementById("LOG").innerText = "";
+    }, 5000)
+}
+
 function parse_time(t_in_seconds) {
     let time = t_in_seconds;
     let _t = "";
@@ -233,6 +240,8 @@ window.onload = function () {
 
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
+            log("error: failed to load songs,\n" +
+            "do you have a songs directory in place?")
             return /* fix infinite attempts for null playlist */
         }
 
