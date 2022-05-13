@@ -1,12 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 const eventEmitter = require("events");
-
+const Mousetrap = require("mousetrap")
 const os = require("os");
 
 const playlist = require("./playlist.js");
 
 const discordRPC = require("discord-rpc");
+const { shell } = require("electron");
 const rpc = new discordRPC.Client({ transport: "ipc" });
 
 const clientId = "961150717748445245";
@@ -19,6 +20,13 @@ var playing = false;
 var looping = false;
 
 let songBuffer = null;
+
+function log(text) {
+    document.getElementById("LOG").innerText = text
+    setTimeout(() => {
+        document.getElementById("LOG").innerText = "";
+    }, 5000)
+}
 
 function parse_time(t_in_seconds) {
     let time = t_in_seconds;
@@ -48,6 +56,15 @@ function parse_time(t_in_seconds) {
 
 window.onload = function () {
 
+    Mousetrap.bind('left', () => {
+        if (songBuffer != null)
+            songBuffer.currentTime = (songBuffer.currentTime - 5);
+    })
+
+    Mousetrap.bind('right', () => {
+        if (songBuffer != null)
+            songBuffer.currentTime = (songBuffer.currentTime + 5);
+    })
     var Songs;
 
     Songs = null;
@@ -92,7 +109,7 @@ window.onload = function () {
     playImage.src = pauseSrc;
     prevImage.src = prevSrc;
     nextImage.src = nextSrc;
-    
+
     if (!fs.existsSync(`${homeDir}/.nfyJS`)) {
         fs.mkdirSync(`${homeDir}/.nfyJS`);
         dirPath = path.join(homeDir, ".nfyJS");
@@ -132,7 +149,7 @@ window.onload = function () {
     var nfyPlaylist = null
 
     client.on("start", () => {
-        nfyPlaylist = new playlist(fs.readdirSync(Songs), function(newIndex) {
+        nfyPlaylist = new playlist(fs.readdirSync(Songs), function (newIndex) {
             if (songBuffer !== null) {
                 songBuffer = null;
                 PlayMusicWrap();
@@ -173,8 +190,8 @@ window.onload = function () {
             }, 1000);
         }, 1000);
     }, 500);
-    
-    client.on("movePlaylist", () => { 
+
+    client.on("movePlaylist", () => {
         if (nfyPlaylist.peekNext() === null) {
             nfyPlaylist.setIndex(0);
             songBuffer = null;
@@ -203,6 +220,7 @@ window.onload = function () {
     })
 
     client.on("removePlaylist", () => {
+
         if (nfyPlaylist.peekPrev() === null) {
             nfyPlaylist.setIndex(0);
             songBuffer = null;
@@ -220,7 +238,7 @@ window.onload = function () {
                 nfyPlaylist.setIndex(0);
                 songBuffer = null;
             } else {
-                nfyPlaylist.moveByOne();
+                nfyPlaylist.removeByOne();
                 PlayMusicWrap();
                 playing = true;
             }
@@ -233,12 +251,18 @@ window.onload = function () {
 
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
-            nfyPlaylist.setIndex(0);
-            songBuffer = null;
-            client.emit("playMusic");
+            nfyPlaylist.setIndex(0)
+            if (nfyPlaylist.getCurrentSong() == null) { /* still null? */
+                log("error: failed to load songs,\n" +
+                    "do you have a songs directory in place?")
+                return /* fix infinite attempts for null playlist */
+            }
+
+            PlayMusicWrap();
+
         }
 
-        let song = `${Songs}\\${nfyPlaylist.getCurrentSong()}`;
+        let song = `${Songs}/${nfyPlaylist.getCurrentSong()}`;
         let songTitle = document.getElementById("song-title");
 
         let parsedName = path.parse(path.basename(song)).name;
@@ -247,7 +271,8 @@ window.onload = function () {
 
         if (songBuffer !== null && playing) songBuffer.pause();
 
-        fs.exists(song, () => {
+        fs.exists(song, (err) => {
+            // if (err) { log("Node.js threw an unbeknownst exists() error."); return; }
             if (!playing) {
                 if (songBuffer == null) {
                     songBuffer = new Audio(song);
@@ -258,16 +283,19 @@ window.onload = function () {
                     playImage.src = playSrc;
                 } else {
                     if (songBuffer != null) {
-                        songBuffer.play();
+                        if (!playing)
+                            songBuffer.play();
+                        else
+                            songBuffer.pause();
                         playImage.src = playSrc;
                     }
                     playing = true;
                 }
 
-                songBuffer.addEventListener("timeupdate", function() {
+                songBuffer.addEventListener("timeupdate", function () {
                     let timeHandler = document.getElementById("song-time");
 
-                    if (nfyPlaylist.getCurrentSong() === null) {
+                    if (nfyPlaylist.getCurrentSong() == null) {
                         nfyPlaylist.setIndex(0);
                         PlayMusicWrap();
                     }
@@ -290,7 +318,7 @@ window.onload = function () {
                     }
                 });
 
-                songBuffer.onended = function() {
+                songBuffer.onended = function () {
                     if (looping) {
                         songBuffer.play();
                     } else if (nfyPlaylist.nextExists()) {
@@ -312,14 +340,14 @@ window.onload = function () {
                         smallImageKey: "js-logo",
                         smallImageText: "Sometimes I wish you would use NFy JS",
                         buttons: [{
-                            label: "Github", 
+                            label: "Github",
                             url: "https://github.com/Cliometric/NFY"
                         }]
                     })
                 }
             }
         })
-    })  
+    })
 
     client.on("loopClicked", () => {
         if (looping === true) {
@@ -340,7 +368,7 @@ window.onload = function () {
 
     client.on("openDir", () => {
         if (fs.existsSync(Songs)) {
-            require("child_process").exec(`start "" ${Songs}`);
+            shell.openPath(Songs)
         } else {
             fs.mkdirSync(`${homeDir}/.nfyJS`);
             dirPath = path.join(homeDir, ".nfyJS");
@@ -348,31 +376,31 @@ window.onload = function () {
             fs.mkdirSync(`${dirPath}/songs`);
             songs = path.join(dirPath, "songs");
             config = path.join(dirPath, "config.json");
-            require("child_process").exec(`start "" ${Songs}`);
+            shell.openPath(songs)
         }
     })
 
-    playButton.addEventListener("click", function() {
+    playButton.addEventListener("click", function () {
         client.emit("playMusic");
     });
 
-    prevButton.addEventListener("click", function() {
+    prevButton.addEventListener("click", function () {
         client.emit("removePlaylist");
     });
 
-    nextButton.addEventListener("click", function() {
+    nextButton.addEventListener("click", function () {
         client.emit("movePlaylist");
     });
 
-    loopButton.addEventListener("click", function() {
+    loopButton.addEventListener("click", function () {
         client.emit("loopClicked");
     });
 
-    shuffleButton.addEventListener("click", function() {
+    shuffleButton.addEventListener("click", function () {
         client.emit("shuffleClicked");
     })
 
-    dirButton.addEventListener("click", function() {
+    dirButton.addEventListener("click", function () {
         client.emit("openDir");
     });
 }
