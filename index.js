@@ -250,9 +250,15 @@ window.onload = function () {
 
     client.on("playMusic", () => {
         if (nfyPlaylist.getCurrentSong() == null) {
-            log("error: failed to load songs,\n" +
-                "do you have a songs directory in place?")
-            return /* fix infinite attempts for null playlist */
+            nfyPlaylist.setIndex(0)
+            if (nfyPlaylist.getCurrentSong() == null) {
+                log("error: failed to load songs,\n" +
+                    "do you have a songs directory in place?")
+                return /* fix infinite attempts for null playlist */
+            }
+
+            PlayMusicWrap();
+
         }
 
         let song = `${Songs}/${nfyPlaylist.getCurrentSong()}`;
