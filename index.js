@@ -256,7 +256,7 @@ window.onload = function () {
         if (songBuffer !== null && playing) songBuffer.pause();
 
         fs.exists(song, (err) => {
-            if (err) { log("Node.js threw an unbeknownst exists() error."); return; }
+            // if (err) { log("Node.js threw an unbeknownst exists() error."); return; }
             if (!playing) {
                 if (songBuffer == null) {
                     songBuffer = new Audio(song);
