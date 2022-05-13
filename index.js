@@ -393,12 +393,6 @@ window.onload = function () {
     dirButton.addEventListener("click", function () {
         client.emit("openDir");
     });
-    const handleKeyPress = (event) => {
-        // You can put code here to handle the keypress.
-        console.log(`You pressed ${event.key}`);
-    }
-
-    window.addEventListener('keyup', handleKeyPress, true);
 }
 
 rpc.login({ clientId });
