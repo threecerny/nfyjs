@@ -7,6 +7,7 @@ const os = require("os");
 const playlist = require("./playlist.js");
 
 const discordRPC = require("discord-rpc");
+const { shell } = require("electron");
 const rpc = new discordRPC.Client({ transport: "ipc" });
 
 const clientId = "961150717748445245";
@@ -348,7 +349,7 @@ window.onload = function () {
 
     client.on("openDir", () => {
         if (fs.existsSync(Songs)) {
-            require("child_process").exec(`start "" ${Songs}`);
+            shell.openPath(Songs)
         } else {
             fs.mkdirSync(`${homeDir}/.nfyJS`);
             dirPath = path.join(homeDir, ".nfyJS");
@@ -356,7 +357,7 @@ window.onload = function () {
             fs.mkdirSync(`${dirPath}/songs`);
             songs = path.join(dirPath, "songs");
             config = path.join(dirPath, "config.json");
-            require("child_process").exec(`start "" ${Songs}`);
+            shell.openPath(Songs)
         }
     })
 
