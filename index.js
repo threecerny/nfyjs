@@ -246,7 +246,7 @@ window.onload = function () {
             return /* fix infinite attempts for null playlist */
         }
 
-        let song = `${Songs}\\${nfyPlaylist.getCurrentSong()}`;
+        let song = `${Songs}/${nfyPlaylist.getCurrentSong()}`;
         let songTitle = document.getElementById("song-title");
 
         let parsedName = path.parse(path.basename(song)).name;
