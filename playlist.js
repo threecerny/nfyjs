@@ -24,6 +24,7 @@ module.exports = class {
         this.idx += 1;
         this.onidchange(this.idx);
     }
+    
         // moves index by -1.
     removeByOne() {
         this.idx -= 1;

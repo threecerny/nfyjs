@@ -220,6 +220,7 @@ window.onload = function () {
     })
 
     client.on("removePlaylist", () => {
+
         if (nfyPlaylist.peekPrev() === null) {
             nfyPlaylist.setIndex(0);
             songBuffer = null;
@@ -237,7 +238,7 @@ window.onload = function () {
                 nfyPlaylist.setIndex(0);
                 songBuffer = null;
             } else {
-                nfyPlaylist.moveByOne();
+                nfyPlaylist.removeByOne();
                 PlayMusicWrap();
                 playing = true;
             }
@@ -282,7 +283,10 @@ window.onload = function () {
                     playImage.src = playSrc;
                 } else {
                     if (songBuffer != null) {
-                        songBuffer.play();
+                        if (!playing)
+                            songBuffer.play();
+                        else
+                            songBuffer.pause();
                         playImage.src = playSrc;
                     }
                     playing = true;
@@ -291,7 +295,7 @@ window.onload = function () {
                 songBuffer.addEventListener("timeupdate", function () {
                     let timeHandler = document.getElementById("song-time");
 
-                    if (nfyPlaylist.getCurrentSong() === null) {
+                    if (nfyPlaylist.getCurrentSong() == null) {
                         nfyPlaylist.setIndex(0);
                         PlayMusicWrap();
                     }
