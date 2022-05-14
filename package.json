@@ -1,6 +1,6 @@
 {
     "name": "nfyjs",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "windows media payer but fancy and can only play music",
     "main": "main.js",
     "build": {
