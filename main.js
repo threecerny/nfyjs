@@ -18,7 +18,7 @@ function createWin() {
         }
     });
     window.loadFile('index.html'); // entry point
-    // window.removeMenu();
+    window.removeMenu();
 };
 
 electron.app.whenReady().then(() => {
