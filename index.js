@@ -7,7 +7,6 @@ const os = require("os");
 const playlist = require("./playlist.js");
 
 const discordRPC = require("discord-rpc");
-const { shell } = require("electron");
 const rpc = new discordRPC.Client({ transport: "ipc" });
 
 const clientId = "961150717748445245";
@@ -26,6 +25,12 @@ function log(text) {
     setTimeout(() => {
         document.getElementById("LOG").innerText = "";
     }, 5000)
+}
+
+function openFolder(path) {
+    const shell = require("electron").shell;
+    const open = shell.openPath || shell.openItem;
+    open(path);
 }
 
 function parse_time(t_in_seconds) {
@@ -101,8 +106,6 @@ window.onload = function () {
     let loopButton = document.getElementById("loopButton");
     let loopImage1 = document.getElementById("loopImage1");
     let loopImage2 = document.getElementById("loopImage2");
-
-    let shuffleButton = document.getElementById("shuffleButton");
 
     let dirButton = document.getElementById("dirButton");
 
@@ -220,7 +223,6 @@ window.onload = function () {
     })
 
     client.on("removePlaylist", () => {
-
         if (nfyPlaylist.peekPrev() === null) {
             nfyPlaylist.setIndex(0);
             songBuffer = null;
@@ -363,7 +365,7 @@ window.onload = function () {
 
     client.on("openDir", () => {
         if (fs.existsSync(Songs)) {
-            shell.openPath(Songs)
+            openFolder(Songs);
         } else {
             fs.mkdirSync(`${homeDir}/.nfyJS`);
             dirPath = path.join(homeDir, ".nfyJS");
@@ -371,7 +373,7 @@ window.onload = function () {
             fs.mkdirSync(`${dirPath}/songs`);
             songs = path.join(dirPath, "songs");
             config = path.join(dirPath, "config.json");
-            shell.openPath(songs)
+            openFolder(Songs);
         }
     })
 
@@ -390,10 +392,6 @@ window.onload = function () {
     loopButton.addEventListener("click", function () {
         client.emit("loopClicked");
     });
-
-    shuffleButton.addEventListener("click", function () {
-        client.emit("shuffleClicked");
-    })
 
     dirButton.addEventListener("click", function () {
         client.emit("openDir");
