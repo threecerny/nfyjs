@@ -97,11 +97,11 @@ function parseHMS(seconds) {
 
     parsedSeconds += seconds.toString()
 
-    if (secs == NaN) {
+    if (parsedSeconds == NaN) {
         parsedSeconds = "00"
     }
 
-    parsedTime += secs
+    parsedTime += parsedSeconds
 
     return parsedTime
 }
