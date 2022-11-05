@@ -80,37 +80,36 @@ volumeSldr.onchange = function() {
 function parseHMS(seconds) {
     let time = seconds
 
-    let _t = ""
+    let parsedTime = ""
 
     var minutes = ~~((time % 3600) / 60)
     var seconds = parseInt(time % 60)
 
     if (seconds == NaN) { seconds = 0 }
 
-    let secs = ""
+    let parsedSeconds = ""
 
-    _t += parseInt(minutes.toString()) + ":"
+    parsedTime += parseInt(minutes.toString()) + ":"
 
     if (seconds < 10) {
-        secs += "0"
+        parsedSeconds += "0"
     }
 
-    secs += seconds.toString()
+    parsedSeconds += seconds.toString()
 
     if (secs == NaN) {
-        secs = "00"
+        parsedSeconds = "00"
     }
 
-    _t += secs
+    parsedTime += secs
 
-    return _t
+    return parsedTime
 }
 
 function clearPlaying() {
     nowPlaying.hidden = true
     nowPlayingTime.hidden = true
 }
-clearPlaying()
 
 function changePlaying(name) {
     nowPlaying.hidden = false
@@ -202,6 +201,8 @@ function createSong(c) {
         c.play()
     })
 }
+
+clearPlaying()
 
 for (const file of fs.readdirSync(songsDir)) {
     if (file.endsWith(".mp3" || file.endsWith(".wav"))) {
