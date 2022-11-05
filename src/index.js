@@ -58,7 +58,7 @@ mouseTrap.bind("space", () => {
         }
 })
 
-nowPlayingDiv.addEventListener("click", function() {
+nowPlayingDiv.addEventListener("click", () => {
     if (songBuffer)
         if (playing) {
             songBuffer.pause()
@@ -71,7 +71,7 @@ nowPlayingDiv.addEventListener("click", function() {
 
 const volumeSldr = document.getElementById("volume")
 
-volumeSldr.onchange = function() {
+volumeSldr.onchange = () => {
 	volume = volumeSldr.value / 100
 	if (songBuffer)
 		songBuffer.volume = volume
@@ -118,7 +118,7 @@ function changePlaying(name) {
 
 function changeTime(audio) {
     nowPlayingTime.hidden = false
-    audio.addEventListener("timeupdate", function() {
+    audio.addEventListener("timeupdate", () => {
         let time = parseHMS(audio.currentTime)
         nowPlayingTime.innerText = time
     })
@@ -207,7 +207,7 @@ clearPlaying()
 for (const file of fs.readdirSync(songsDir)) {
     if (file.endsWith(".mp3" || file.endsWith(".wav"))) {
 		const newSongBuffer = new Audio(path.join(songsDir, file))
-		newSongBuffer.onloadedmetadata = function() {
+		newSongBuffer.onloadedmetadata = () => {
             let songC = new song(path.parse(file).name, parseHMS(Math.floor(newSongBuffer.duration)).toString(), file)
             songs.push(path.join(songsDir, file))
 		    newSongBuffer.volume = volume
