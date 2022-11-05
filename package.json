@@ -12,13 +12,11 @@
     "build": {
       "appId": "com.electron.NFyJS",
       "productName": "NFyJS",
-      "icon": "./src/images/icon.ico",
-      "linux": {
-        "target": "rpm"
-      }
+      "icon": "./src/images/icon.ico"
     },
     "name": "nfyjs",
     "version": "1.0.0",
+    "description": "fancy media player",
     "main": "electronSetup.js",
     "author": "Roe (https://roeworks.net/) <roe@roeworks.net>",
     "homepage": "https://roeworks.net/",
