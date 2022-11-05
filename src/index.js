@@ -136,7 +136,7 @@ class song {
                 if (filePath == songPath) {
                     if (songBuffer !== null && playing) songBuffer.pause()
 
-                    fs.exists(songPath, (err) => {
+                    fs.exists(songPath, () => {
                         if (songBuffer == null) {
                             songBuffer = new Audio(songPath) 
 							songBuffer.volume = volume
