@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" defer></script>
+</head>
+<body>
+    <img src="images/icon.ico" draggable="false" class="flex mx-auto w-14">
+	<input id="volume" type="range" min="1" max="100" class="flex mx-auto h-2 m-4 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+
+    <div id="sidebar">
+        <div id="sidebar-content" class="hidden md:block fixed px-2">
+			<ul>
+                <li>
+                    <button id="dirBtn" class="relative flex items-center justify-center h-12 w-12 mt-2 mx-auto shadow-lg bg-gray-700 text-yellow-300 hover:bg-yellow-500 hover:text-white rounded-3xl hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                    </button>
+                </li>
+                <li>
+                    <button id="loopBtn" class="relative flex items-center justify-center h-12 w-12 mt-2 mx-auto shadow-lg bg-gray-700 text-yellow-300 hover:bg-yellow-500 hover:text-white rounded-3xl hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="songs" class="mx-auto my-16 h-screen w-3/4 rounded-lg bg-indigo-50 p-4">
+    <div id="nowPlayingDiv" class="flex justify-between">
+        <span id="nowPlaying" class="float-right text-2xl font-semibold text-slate-900"></span>
+        <span id="nowPlayingTime" class="float-right text-2xl font-semibold text-slate-900"></span>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: rgb(38, 38, 38);
+    overflow: hidden; 
+}
+
+span {
+    user-select: none;
+}
+
+p { 
+    user-select: none;
+}
