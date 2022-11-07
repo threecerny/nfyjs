@@ -37,6 +37,8 @@ const nowPlayingDiv = document.getElementById("nowPlayingDiv")
 const nowPlaying = document.getElementById("nowPlaying")
 const nowPlayingTime = document.getElementById("nowPlayingTime")
 
+const volumeSldr = document.getElementById("volume")
+
 mouseTrap.bind("left", () => {
     if (songBuffer)
         songBuffer.currentTime = (songBuffer.currentTime - 5);
@@ -67,9 +69,7 @@ nowPlayingDiv.addEventListener("click", () => {
             songBuffer.play()
             playing = true
         }
-}) 
-
-const volumeSldr = document.getElementById("volume")
+})
 
 volumeSldr.onchange = () => {
 	volume = volumeSldr.value / 100
@@ -150,6 +150,7 @@ class song {
                         } else {
                             if (!playing) {
 								songBuffer = new Audio(songPath)
+                                songBuffer.volume = volume
                                 songBuffer.play()
                                 changePlaying(name)
                                 changeTime(songBuffer)
@@ -164,10 +165,11 @@ class song {
                                 songBuffer.play()
                                 changePlaying(name)
                                 changeTime(songBuffer)
-								playing = true
+                                playing = true
                             } else {
                                 let randomSong = songs[Math.floor(Math.random() * (songs.length - 0) + 0)]
-                                songBuffer = new Audio(randomSong)
+                                songBuffer.src = randomSong
+                                songBuffer.volume = volume
                                 songBuffer.play()
                                 changePlaying(path.parse(randomSong).name)
                                 changeTime(songBuffer)
