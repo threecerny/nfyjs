@@ -2,7 +2,8 @@
     "scripts": {
       "start": "npx tailwindcss -i ./src/input.css -o ./src/style.css && electron .",
       "tbuild": "npx tailwindcss -i ./src/input.css -o ./src/style.css --watch",
-      "dist": "electron-builder"
+      "build-linux": "electron-builder build --linux",
+	  "build-win": "electron-builder build --win"
     },
     "devDependencies": {
       "electron": "^19.0.15",
@@ -12,7 +13,14 @@
     "build": {
       "appId": "com.electron.NFyJS",
       "productName": "NFyJS",
-      "icon": "./src/images/icon.png"
+	  "win": {
+	    "target": "exe",
+		"icon": "./src/images/icon.ico"
+	  },
+	  "linux": {
+		"target": "AppImage",
+		"icon": "./src/images/icon.png"
+	  }
     },
     "name": "nfyjs",
     "version": "1.0.3",
@@ -24,5 +32,4 @@
     "dependencies": {
       "mousetrap": "^1.6.5"
     }
-  }
-  
+  } 
