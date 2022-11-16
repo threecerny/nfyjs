@@ -14,7 +14,7 @@
       "appId": "com.electron.NFyJS",
       "productName": "NFyJS",
 	  "win": {
-	    "target": "exe",
+	    "target": "nsis",
 		"icon": "./src/images/icon.ico"
 	  },
 	  "linux": {
