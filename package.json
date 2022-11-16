@@ -3,7 +3,7 @@
       "start": "npx tailwindcss -i ./src/input.css -o ./src/style.css && electron .",
       "tbuild": "npx tailwindcss -i ./src/input.css -o ./src/style.css --watch",
       "build-linux": "electron-builder build --linux",
-	  "build-win": "electron-builder build --win"
+	    "build-win": "electron-builder build --win"
     },
     "devDependencies": {
       "electron": "^19.0.15",
