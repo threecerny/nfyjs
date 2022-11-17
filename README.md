@@ -8,12 +8,11 @@
 
 <p align="center">
   <a href="https://github.com/threecerny/nfyjs/releases/latest">
-    <img src="https://img.shields.io/github/release/threecerny/nfyjs?style=for-the-badge&logo=github&color=333333&logoColor=fdc939">
+    		<img alt="Releases" src="https://img.shields.io/github/release/threecerny/nfyjs?style=for-the-badge&logo=github&color=333333&logoColor=fdc939&"></a>
   </a>
   <a href="https://github.com/threecerny/nfyjs/stargazers">
-    <img src="https://img.shields.io/github/stars/threecerny/nfyjs?style=for-the-badge&logo=starship&color=333333&logoColor=fdc939">
+    		<img alt="Stargazers" src="https://img.shields.io/github/stars/threecerny/nfyjs?style=for-the-badge&logo=starship&color=333333&logoColor=fdc939"></a>
   </a>
   <a href="https://github.com/threecerny/nfyjs/issues">
-    <img src="https://img.shields.io/github/issues/threecerny/nfyjs?style=for-the-badge&logo=ifixit&color=333333&logoColor=fdc939">
-  </a>
+    <img alt="Issues" src="https://img.shields.io/github/issues/threecerny/nfyjs?style=for-the-badge&logo=ifixit&color=333333&logoColor=fdc939"></a>
 </p>
