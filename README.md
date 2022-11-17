@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://github.com/threecerny/nfyjs/releases/latest">
-    		<img alt="Releases" src="https://img.shields.io/github/release/threecerny/nfyjs?style=for-the-badge&logo=github&color=333333&logoColor=fdc939&"></a>
+    		<img alt="Releases" src="https://img.shields.io/github/release/threecerny/nfyjs?style=for-the-badge&logo=github&color=333333&logoColor=fdc939"></a>
   </a>
   <a href="https://github.com/threecerny/nfyjs/stargazers">
     		<img alt="Stargazers" src="https://img.shields.io/github/stars/threecerny/nfyjs?style=for-the-badge&logo=starship&color=333333&logoColor=fdc939"></a>
