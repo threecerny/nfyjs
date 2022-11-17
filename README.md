@@ -1,8 +1,7 @@
 <h1 align="left">
   nfyjs
+  <img src="https://raw.githubusercontent.com/threecerny/nfyjs/master/src/images/icon.ico" align="right">
 </h1>
-
-<img src="https://raw.githubusercontent.com/threecerny/nfyjs/master/src/images/icon.ico" align="right">
 
 ##### nfyjs (non-functioning-yapper) is a music software for people that don't like ads or a lot of memory usage. in the future, i aim to make a built-in youtube-downloader, and integration with the terminal
 
