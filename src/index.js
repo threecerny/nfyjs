@@ -19,14 +19,16 @@ if (!fs.existsSync(path.join(homeDir, ".nfyjs"))) {
     fs.mkdirSync(path.join(homeDir, ".nfyjs"))
     mainDir = path.join(path.join(homeDir, ".nfyjs"))
     fs.mkdirSync(path.join(mainDir, "songs"))
-								let songsArray = songs.filter(item => item == songPath)
-                                let randomSong = songsArray[Math.floor(Math.random() * (songs.length - 0) + 0)]
-                                songBuffer.src = randomSong
-                                songBuffer.volume = volume
-                                songBuffer.play()
-                                changePlaying(path.parse(randomSong).name)
-                                changeTime(songBuffer)
-                                playing = true
+
+	let songsArray = songs.filter(item => item == songPath)
+    let randomSong = songsArray[Math.floor(Math.random() * (songs.length - 0) + 0)]
+
+    songBuffer.src = randomSong
+    songBuffer.volume = volume
+    songBuffer.play()
+    changePlaying(path.parse(randomSong).name)
+    changeTime(songBuffer)
+    playing = true
     songsDir = path.join(mainDir, "songs") 
 } else {
     mainDir = path.join(path.join(homeDir, ".nfyjs"))
